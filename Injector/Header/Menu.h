@@ -12,6 +12,7 @@ enum{
 	wxID_DLL_LOCATION = wxID_HIGHEST + 3,
 	wxID_PROCESS_NAME = wxID_HIGHEST + 4,
 	wxID_LOAD_CONFIG = wxID_HIGHEST + 5,
+	wxID_REFRESH_PROC = wxID_HIGHEST + 6,
 };
 class Menu : public wxFrame{
 	public:
@@ -21,9 +22,9 @@ class Menu : public wxFrame{
 		void Inject(wxCommandEvent& e);
 		void SaveConfig(wxCommandEvent& e);
 		void LoadConfig(wxCommandEvent& e);
+		void Refresh(wxCommandEvent& e);
 		std::string GetProcess();
 		std::string GetInjection();
-
 		DECLARE_EVENT_TABLE()
 	private:
 		std::string process;
