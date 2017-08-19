@@ -78,3 +78,30 @@
 		else std::cout << "Success with thread id: " << thread_id;
 		return true;
 	}
+
+	void MiscFunc::GetProcessNames(std::vector<std::wstring>* list_of_names){
+		DWORD* process_ids = (DWORD*) calloc(sizeof(DWORD), 2048);
+		LPWSTR name = (LPWSTR) calloc(sizeof(TCHAR), 2048);
+		unsigned short num_processes;
+		DWORD cb = sizeof(DWORD) * 2048;
+		DWORD bytes_returned;
+		HANDLE proc_handle;
+		unsigned int copied_chars = 0;
+		EnumProcesses(process_ids, cb, &bytes_returned);
+		PROCESSENTRY32 proc_info;
+		proc_info.dwSize = sizeof(PROCESSENTRY32);
+		num_processes = (unsigned short) bytes_returned / sizeof(DWORD);
+		for(int x = 0; x < num_processes; x++){
+			proc_handle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, false, process_ids[x]);
+			if(proc_handle != NULL){
+				copied_chars = GetModuleBaseName(proc_handle, NULL, name, 2048);
+				if(copied_chars > 0){
+					list_of_names->push_back(std::wstring(name));
+					memset(name, 0x0, 200 * sizeof(char));
+				}
+				CloseHandle(proc_handle);
+			}
+		}
+		free(process_ids);
+		free(name);
+	}
