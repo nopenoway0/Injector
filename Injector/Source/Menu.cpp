@@ -1,26 +1,42 @@
 #include "Menu.h"
 
 Menu::Menu() : wxFrame(NULL, wxID_ANY, "Injector v0.5"){
+	std::vector<std::wstring> proc_list;
 	wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL | wxHORIZONTAL | wxEXPAND);
 	wxPanel* main_panel = new wxPanel(this);
+	/*
+	wxIcon icon;
+	wxBitmap bitmap;
+	bitmap.LoadFile("needle.ico", wxBITMAP_TYPE_ICO);
+	icon.CopyFromBitmap(bitmap);
+	SetIcon(wxIcon(icon));*/
 
 	sizer->AddSpacer(10);
-	wxTextCtrl* process_name = new wxTextCtrl(main_panel, wxID_PROCESS_NAME);
 	wxFilePickerCtrl* dll_browse = new wxFilePickerCtrl(main_panel, wxID_DLL_LOCATION);
 	wxButton* inject = new wxButton(main_panel, wxID_INJECT, _T("Inject"), wxDefaultPosition, wxDefaultSize, 0);
 	wxButton* save_config = new wxButton(main_panel, wxID_SAVE_CONFIG, _T("Save Config"), wxDefaultPosition, wxDefaultSize, 0);
 	wxButton* load_config = new wxButton(main_panel, wxID_LOAD_CONFIG, _T("Load Config"), wxDefaultPosition, wxDefaultSize, 0);
+	wxButton* refresh_button = new wxButton(main_panel, wxID_REFRESH_PROC, _T("Refresh Processor List"), wxDefaultPosition, wxDefaultSize, 0);
 	
+	// Create dropdown lists for processes
+	MiscFunc::GetProcessNames(&proc_list);
+	wxChoice* process_dropdown = new wxChoice(main_panel, wxID_PROCESS_NAME);
+	for(unsigned int x = 0; x < proc_list.size(); x++){
+		process_dropdown->Append(proc_list.at(x));
+	}
+
 	// Store everything in sizer for formatting
 	sizer->Add(dll_browse, wxSizerFlags().Expand());
 	sizer->Add(0,10, wxSizerFlags().Expand());
-	sizer->Add(process_name, wxSizerFlags().Expand());
+	sizer->Add(process_dropdown, wxSizerFlags().Expand());
 	sizer->Add(0,10, wxSizerFlags().Expand());
 	sizer->Add(inject, wxSizerFlags().Centre());
 	sizer->Add(0,10, wxSizerFlags().Expand());
 	sizer->Add(save_config, wxSizerFlags().Centre());
 	sizer->Add(0,10, wxSizerFlags().Expand());
 	sizer->Add(load_config, wxSizerFlags().Centre());
+	sizer->Add(0,10, wxSizerFlags().Expand());
+	sizer->Add(refresh_button, wxSizerFlags().Centre());	
 	main_panel->SetSizer(sizer);
 }
 
@@ -41,9 +57,10 @@ std::string Menu::GetProcess(){
 }
 
 void Menu::Inject(wxCommandEvent& e){
-	wxString content = ((wxTextCtrl*) (this->FindWindow(wxID_PROCESS_NAME)))->GetLineText(1);
+	int choice = ((wxChoice*) (this->FindWindow(wxID_PROCESS_NAME)))->GetCurrentSelection();
+	wxString process_name = ((wxChoice*) (this->FindWindow(wxID_PROCESS_NAME)))->GetString(choice);
 	wxString path = ((wxFilePickerCtrl*) (this->FindWindow(wxID_DLL_LOCATION)))->GetPath();
-	if(MiscFunc::Inject(path.ToStdString().c_str(), content.ToStdString().c_str())) wxLogMessage("Successful Injection");
+	if(MiscFunc::Inject(path.ToStdString().c_str(), process_name.ToStdString().c_str())) wxLogMessage("Successful Injection");
 	else wxLogMessage("Injection Failure");
 }
 
@@ -87,4 +104,11 @@ void Menu::LoadConfig(wxCommandEvent& e){
 		fclose(config);
 		free(config_data);
 	}
+}
+
+void Menu::Refresh(wxCommandEvent& e){
+	((wxChoice*) (this->FindWindow(wxID_PROCESS_NAME)))->Clear();
+	std::vector<std::wstring> proc_list;
+	MiscFunc::GetProcessNames(&proc_list);
+	for(unsigned int x = 0; x < proc_list.size(); x++) ((wxChoice*) (this->FindWindow(wxID_PROCESS_NAME)))->Append(proc_list.at(x));
 }
