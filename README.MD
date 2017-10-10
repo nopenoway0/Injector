@@ -2,7 +2,12 @@ Simple injector used to inject DLL's into currently running processes.
 
 Compiling:
 
-Open solution and change the include directory to standard wxWidgets includes, and the msvc include as well. Preprocessor commands should already be present in the solution. Link to the appropriate libraries and make sure to include the appropriate library directories as well. Make sure the configurations are set to build Win32 or x86. X64 builds are not set up.
+install wxWidgets then perform the following
+
+mkdir build
+cd build
+cmake ..
+then make produced solution with msbuild Injector.sln or open with Visual Studio and compile
 
 More information on the how to set up a solution with wxWidgets here: https://wiki.wxwidgets.org/Microsoft_Visual_C%2B%2B_Guide
 
