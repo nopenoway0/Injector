@@ -4,12 +4,12 @@ Menu::Menu() : wxFrame(NULL, wxID_ANY, "Injector v0.5"){
 	std::vector<std::wstring> proc_list;
 	wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL | wxHORIZONTAL | wxEXPAND);
 	wxPanel* main_panel = new wxPanel(this);
-	/*
+
 	wxIcon icon;
 	wxBitmap bitmap;
 	bitmap.LoadFile("needle.ico", wxBITMAP_TYPE_ICO);
 	icon.CopyFromBitmap(bitmap);
-	SetIcon(wxIcon(icon));*/
+	SetIcon(wxIcon(icon));
 
 	sizer->AddSpacer(10);
 	wxFilePickerCtrl* dll_browse = new wxFilePickerCtrl(main_panel, wxID_DLL_LOCATION);

@@ -3,6 +3,7 @@
 
 #include <wx/wxprec.h>
 #include "Menu.h"
+#include <wx/icon.h>
 #ifndef WX_PRECOMP
 	#include <wx/wx.h>
 #endif
