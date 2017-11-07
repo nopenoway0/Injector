@@ -1,16 +1,22 @@
-Simple injector used to inject DLL's into currently running processes.
+# Injector
+### Simple injector used to inject DLL's into currently running processes.
 
-Compiling:
+## Compiling:
 
-install wxWidgets then perform the following
+Get the [wxWidgets libraries](http://wxwidgets.org/) and [CMake](https://cmake.org/). Then navigate to the main directory and perform the following:
 
 mkdir build
+
 cd build
+
 cmake ..
-then make produced solution with msbuild Injector.sln or open with Visual Studio and compile
 
-More information on the how to set up a solution with wxWidgets here: https://wiki.wxwidgets.org/Microsoft_Visual_C%2B%2B_Guide
+This will produce a solution or .sln. Use this file to compile the injector.
 
-Usage:
+You will have to tell CMake the root directory for the wxWidgets libraries and includes.
 
-Use the top slot to browse to the dll that should be injected and type the name of the exe into the next textbox. Simply hit inject and the program will attempt to inject the dll. Save config saves the exe name and path, and load checks for a config file containing the exe name and path
+## Usage:
+
+![main_panel](https://user-images.githubusercontent.com/13967957/32491855-1350c6de-c36d-11e7-8ac6-9cb474dd8604.PNG)
+
+Use the top slot to browse to the dll that should be injected and select the executable you would like to inject in the bottom slot. Simply hit inject and the program will attempt to inject the dll. Save config saves the exe name and path, and load checks for a config file containing the exe name and path.
